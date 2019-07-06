@@ -24,7 +24,7 @@ public class BetController {
         return betService.getBet(betId);
     }
 
-    @RequestMapping("users/userId/bets/{betId}")
+    @RequestMapping("users/{userId}/bets/{betId}")
     public Bet getBetByUser(@PathVariable int betId) {
         return betService.getBet(betId);
     }
