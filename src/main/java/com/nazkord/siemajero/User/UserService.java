@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private List<User> users = new ArrayList<>(Arrays.asList(
-            new User(1,"Nazar", 19, "blabla"),
-            new User(2,"Ola", 18, "olabzowy"),
-            new User(3, "Taras", 7, "tkord")
+            new User(1,"Nazar", 19, "blabla", new ArrayList<>()),
+            new User(2,"Ola", 18, "olabzowy", new ArrayList<>()),
+            new User(3, "Taras", 7, "tkord", new ArrayList<>())
     ));
 
     public List<User> getAllUsers() {
