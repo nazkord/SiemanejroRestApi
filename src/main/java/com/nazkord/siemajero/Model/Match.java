@@ -1,21 +1,19 @@
-package com.nazkord.siemajero.Match;
-
-import com.nazkord.siemajero.Model.Score;
+package com.nazkord.siemajero.Model;
 
 public class Match {
     private String homeTeam;
     private String awayTeam;
     private Score score;
-    private int match_id;
+    private Long id;
 
     public Match() {
     }
 
-    public Match(String homeTeam, String awayTeam, Score score, int match_id) {
+    public Match(String homeTeam, String awayTeam, Score score, Long id) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.score = score;
-        this.match_id = match_id;
+        this.id = id;
     }
 
     public String getHomeTeam() {
@@ -42,11 +40,11 @@ public class Match {
         this.score = score;
     }
 
-    public int getMatch_id() {
-        return match_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setMatch_id(int match_id) {
-        this.match_id = match_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 }
