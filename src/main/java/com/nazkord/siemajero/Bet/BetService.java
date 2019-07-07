@@ -37,4 +37,8 @@ public class BetService {
                 .filter(bet -> bet.getBet_id() == bet_id)
                 .collect(Collectors.toList()).get(0);
     }
+
+    public void deleteBet(int bet_id) {
+        bets.remove(getBet(bet_id));
+    }
 }

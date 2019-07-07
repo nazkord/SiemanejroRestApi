@@ -42,10 +42,10 @@ public class BetController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{userIdToReplaced}")
     public void updateUser(@RequestBody User userToUpdate, @PathVariable int userIdToReplaced) {
-
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
-    public void deleteUser(@PathVariable int userId) {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{userId}/bets/{betId}")
+    public void deleteBet(@PathVariable int betId) {
+        betService.deleteBet(betId);
     }
 }
