@@ -22,7 +22,7 @@ public class UserService {
         // TODO: change to lambdas
         for (User user:
                 users) {
-            if(user.getUser_id() == user_id)
+            if(user.getId() == user_id)
                 return user;
         }
         return null;
@@ -30,7 +30,7 @@ public class UserService {
 
     public void updateUser(User userToUpdate, int userId) {
         for(int i = 0; i < users.size(); i++) {
-            if(users.get(i).getUser_id() == userId) {
+            if(users.get(i).getId() == userId) {
                 users.set(i, userToUpdate);
                 return;
             }
