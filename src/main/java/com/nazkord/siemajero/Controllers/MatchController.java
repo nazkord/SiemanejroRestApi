@@ -22,7 +22,4 @@ public class MatchController {
     public Match getMatch(@PathVariable Long matchId) {
         return matchService.getMatchById(matchId);
     }
-    // TODO: make with work
-//    @RequestMapping("/{matchId}/bets")
-
 }

@@ -1,14 +1,20 @@
 package com.nazkord.siemajero.MapBasedServices;
 
+import com.nazkord.siemajero.Model.Bet;
 import com.nazkord.siemajero.Model.Match;
 import com.nazkord.siemajero.Model.Score;
+import com.nazkord.siemajero.Services.BetService;
 import com.nazkord.siemajero.Services.MatchService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 public class MapBasedMatchService implements MatchService {
 
     // TODO: make this work with real API (connect with Siemanejro project)
+
+    @Autowired
+    private BetService betService;
 
     private Map<Long, Match> matches = new HashMap<Long, Match>() {{
             put(234L, new Match("ManUtd", "ManCity", new Score(1, 1), 234L));
