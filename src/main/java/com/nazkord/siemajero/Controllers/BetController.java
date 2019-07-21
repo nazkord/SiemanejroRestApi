@@ -51,7 +51,7 @@ public class BetController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{betId}")
-    public ResponseEntity<?> updateUser(@RequestBody Bet bet, @PathVariable Long betId) {
+    public ResponseEntity<?> updateBet(@RequestBody Bet bet, @PathVariable Long betId) {
         if(bet.getId().equals(betId)) {
             try {
                 betService.updateBet(bet);
@@ -63,6 +63,12 @@ public class BetController {
         } else {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(value = "/{betId}", method = RequestMethod.DELETE)
+    //TODO: should i check whether this bet exists?
+    public void deleteBet(@PathVariable Long betId) {
+        betService.deleteBet(betId);
     }
 
     // TODO: work with authenticated user

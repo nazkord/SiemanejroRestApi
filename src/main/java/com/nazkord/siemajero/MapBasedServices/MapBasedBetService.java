@@ -77,4 +77,8 @@ public class MapBasedBetService implements BetService {
         bets.replace(bet.getId(), bet);
         return true;
     }
+
+    public void deleteBet(Long betId) {
+        bets.remove(betId);
+    }
 }

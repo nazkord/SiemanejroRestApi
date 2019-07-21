@@ -13,4 +13,5 @@ public interface BetService {
     Map<Long, Bet> getBetsByMatchId(Long matchId);
     Bet addBet(Bet bet);
     Boolean updateBet(Bet bet);
+    void deleteBet(Long betId);
 }
