@@ -9,7 +9,8 @@ import java.util.Map;
 
 public interface BetService {
 
-    Map<Long, Bet> getAllBets();
+    //TODO: only for admin
+    //Map<Long, Bet> getAllBets();
     Map<Long, Bet> getAllUsersBets(Long userId);
     Bet getBet(Long betId, Long userId);
     void addBet(Match match, Score score, User user);

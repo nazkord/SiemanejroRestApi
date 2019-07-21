@@ -9,10 +9,10 @@ import java.util.*;
 public class UserService {
 
     private Map<Long, User> users = new HashMap<Long, User>() {{
-        put(Long.valueOf(1), new User(Long.valueOf(1),"Nazar", new ArrayList<>()));
-        put(Long.valueOf(2), new User(Long.valueOf(2),"Ola", new ArrayList<>()));
-        put(Long.valueOf(3), new User(Long.valueOf(3),"Taras", new ArrayList<>()));
-        put(Long.valueOf(4), new User(Long.valueOf(4),"Kuba", new ArrayList<>()));
+        put(1L, new User(1L,"Nazar", new ArrayList<>()));
+        put(2L, new User(2L,"Ola", new ArrayList<>()));
+        put(3L, new User(3L,"Taras", new ArrayList<>()));
+        put(4L, new User(4L,"Kuba", new ArrayList<>()));
     }};
 
     public Map<Long,User> getAllUsers() {

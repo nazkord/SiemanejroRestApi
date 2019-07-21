@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,7 +30,7 @@ public class BetController {
         return betService.getAllUsersBets(getLoggedInUser(httpSession).getId());
     }
 
-    @RequestMapping(value = "/{betId}")
+    @RequestMapping(value = "/{betId}", method = RequestMethod.GET)
     public Bet getBet(@PathVariable Long betId, HttpSession httpSession) {
         return betService.getBet(betId, getLoggedInUser(httpSession).getId());
     }
@@ -46,7 +45,8 @@ public class BetController {
 
     }
 
+    // TODO: work with authenticated user
     private User getLoggedInUser(HttpSession httpSession) {
-        return userService.getUserById(Long.valueOf(1));
+        return userService.getUserById(1L);
     }
 }

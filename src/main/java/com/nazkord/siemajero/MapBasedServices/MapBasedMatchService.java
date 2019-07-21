@@ -11,13 +11,13 @@ public class MapBasedMatchService implements MatchService {
     // TODO: make this work with real API (connect with Siemanejro project)
 
     private Map<Long, Match> matches = new HashMap<Long, Match>() {{
-            put(Long.valueOf(234), new Match("ManUtd", "ManCity", new Score(1, 1), Long.valueOf(234)));
-            put(Long.valueOf(456), new Match("Chelsea", "Arsenal", new Score(1, 1), Long.valueOf(456)));
-            put(Long.valueOf(341), new Match("Dynamo", "Barcelona", new Score(2, 1), Long.valueOf(341)));
-            put(Long.valueOf(567), new Match("Shakhtar", "Malme", new Score(0, 3), Long.valueOf(567)));
-            put(Long.valueOf(202), new Match("Arsenal", "ManUtd", new Score(1, 0), Long.valueOf(202)));
-            put(Long.valueOf(908), new Match("Bayern", "Borrusia", new Score(3, 1), Long.valueOf(908)));
-            put(Long.valueOf(132), new Match("Juventus", "ManCity", new Score(2, 1), Long.valueOf(132)));
+            put(234L, new Match("ManUtd", "ManCity", new Score(1, 1), 234L));
+            put(456L, new Match("Chelsea", "Arsenal", new Score(1, 1), 456L));
+            put(341L, new Match("Dynamo", "Barcelona", new Score(2, 1), 341L));
+            put(567L, new Match("Shakhtar", "Malme", new Score(0, 3), 567L));
+            put(202L, new Match("Arsenal", "ManUtd", new Score(1, 0), 202L));
+            put(908L, new Match("Bayern", "Borrusia", new Score(3, 1), 908L));
+            put(132L, new Match("Juventus", "ManCity", new Score(2, 1), 132L));
     }};
 
     public Map<Long, Match> getAllMatches() {
