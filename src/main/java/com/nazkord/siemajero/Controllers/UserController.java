@@ -43,7 +43,7 @@ public class UserController {
 
     // TODO: make work for real user
     private User getLoggedInUser(HttpSession httpSession) {
-        return userService.getUserById(Long.valueOf(1));
+        return userService.getUserById(1L);
     }
 
 }
