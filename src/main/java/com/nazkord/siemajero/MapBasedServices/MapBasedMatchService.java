@@ -13,9 +13,6 @@ public class MapBasedMatchService implements MatchService {
 
     // TODO: make this work with real API (connect with Siemanejro project)
 
-    @Autowired
-    private BetService betService;
-
     private Map<Long, Match> matches = new HashMap<Long, Match>() {{
             put(234L, new Match("ManUtd", "ManCity", new Score(1, 1), 234L));
             put(456L, new Match("Chelsea", "Arsenal", new Score(1, 1), 456L));
@@ -33,4 +30,6 @@ public class MapBasedMatchService implements MatchService {
     public Match getMatchById(Long matchId) {
         return matches.get(matchId);
     }
+
+
 }

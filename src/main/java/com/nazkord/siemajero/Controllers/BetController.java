@@ -23,21 +23,20 @@ public class BetController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Map<Long, Bet> getAllBets(HttpSession httpSession) {
+    public Map<Long, Bet> getAllBets(@RequestParam(required = false) Long matchId, HttpSession httpSession) {
         //TODO: only admin
 //        return betService.getAllBets();
         //TODO: real user
-        return betService.getAllUserBets(getLoggedInUser(httpSession).getId());
+        if(matchId == null) { // get every bet
+            return betService.getAllUserBets(getLoggedInUser(httpSession).getId());
+        } else { // get only bet for giver match
+            return betService.getBetsByMatchId(matchId);
+        }
     }
 
     @RequestMapping(value = "/{betId}", method = RequestMethod.GET)
     public Bet getBet(@PathVariable Long betId, HttpSession httpSession) {
         return betService.getBetById(betId, getLoggedInUser(httpSession).getId());
-    }
-
-    @RequestMapping(value = "/byMatch/{matchId}" ,method = RequestMethod.GET)
-    public Map<Long, Bet> getBetsByMatch(@PathVariable Long matchId) {
-        return betService.getBetsByMatchId(matchId);
     }
 
     // in UI add bet button in matchActivity
