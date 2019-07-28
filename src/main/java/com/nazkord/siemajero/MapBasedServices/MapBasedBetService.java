@@ -35,10 +35,10 @@ public class MapBasedBetService implements BetService {
         bets.put(8L, new Bet(8L, matchService.getMatchById(908L), userService.getUserById(1L), new Score(1,4),0));
     }
 
-    //TODO: only for admin
-    /*public Map<Long, Bet> getAllBets() {
+
+    public Map<Long, Bet> getAllBets() {
         return bets;
-    }*/
+    }
 
     public Map<Long, Bet> getAllUserBets(Long userId) {
         return bets.entrySet().stream()

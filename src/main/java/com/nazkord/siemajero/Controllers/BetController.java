@@ -7,9 +7,11 @@ import com.nazkord.siemajero.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -23,15 +25,19 @@ public class BetController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Map<Long, Bet> getAllBets(@RequestParam(required = false) Long matchId, HttpSession httpSession) {
-        //TODO: only admin
-//        return betService.getAllBets();
-        //TODO: real user
-        if(matchId == null) { // get every bet
-            return betService.getAllUserBets(getLoggedInUser(httpSession).getId());
-        } else { // get only bet for giver match
-            return betService.getBetsByMatchId(matchId);
+    public Map<Long, Bet> getAllBets(SecurityContextHolderAwareRequestWrapper securityWrapper,
+                                     @RequestParam(required = false) Long matchId, HttpSession httpSession) {
+
+        if(securityWrapper.isUserInRole("ADMIN")) {
+            return betService.getAllBets();
+        } else if(securityWrapper.isUserInRole("USER")) {
+            if (matchId == null) { // get all user's bets
+                return betService.getAllUserBets(getLoggedInUser(httpSession).getId());
+            } else { // get only bet for giver match
+                return betService.getBetsByMatchId(matchId);
+            }
         }
+        return Collections.emptyMap();
     }
 
     @RequestMapping(value = "/{betId}", method = RequestMethod.GET)
