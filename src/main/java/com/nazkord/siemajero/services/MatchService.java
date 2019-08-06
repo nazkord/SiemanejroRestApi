@@ -1,7 +1,6 @@
-package com.nazkord.siemajero.Services;
+package com.nazkord.siemajero.services;
 
-import com.nazkord.siemajero.Model.Bet;
-import com.nazkord.siemajero.Model.Match;
+import com.nazkord.siemajero.model.Match;
 
 import java.util.Map;
 

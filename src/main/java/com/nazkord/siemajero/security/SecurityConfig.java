@@ -1,4 +1,4 @@
-package com.nazkord.siemajero.Security;
+package com.nazkord.siemajero.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +16,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin").password(encoder().encode("adminPass")).roles("ADMIN")
+                .withUser("admin").password(encoder().encode("adminPass")).roles(String.valueOf(Role.ADMIN))
                 .and()
-                .withUser("user").password(encoder().encode("userPass")).roles("USER");
+                .withUser("user").password(encoder().encode("userPass")).roles(String.valueOf(Role.USER));
     }
 
     @Override
@@ -27,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .httpBasic()
             .and()
             .authorizeRequests()
-            .antMatchers("/bets/**", "/matches/**").hasAnyRole("USER", "ADMIN")
-            .antMatchers("/users/**").hasRole("ADMIN")
+            .antMatchers("/bets/**", "/matches/**").hasAnyRole(String.valueOf(Role.ADMIN), String.valueOf(Role.USER))
+            .antMatchers("/users/**").hasRole(String.valueOf(Role.ADMIN))
             .and()
             .csrf().disable()
             .headers().frameOptions().disable()

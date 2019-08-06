@@ -1,10 +1,10 @@
-package com.nazkord.siemajero.MapBasedServices;
+package com.nazkord.siemajero.mapBasedServices;
 
-import com.nazkord.siemajero.Model.Bet;
-import com.nazkord.siemajero.Model.Score;
-import com.nazkord.siemajero.Services.BetService;
-import com.nazkord.siemajero.Services.MatchService;
-import com.nazkord.siemajero.Services.UserService;
+import com.nazkord.siemajero.model.Bet;
+import com.nazkord.siemajero.model.Score;
+import com.nazkord.siemajero.services.BetService;
+import com.nazkord.siemajero.services.MatchService;
+import com.nazkord.siemajero.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -45,6 +45,10 @@ public class MapBasedBetService implements BetService {
                 .filter(map -> map.getValue().getUser().getId().equals(userId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+    }
+
+    public Bet getBet(Long betId) { //available only for admin
+        return bets.get(betId);
     }
 
     public Bet getBetById(Long betId, Long userId) {

@@ -1,7 +1,7 @@
-package com.nazkord.siemajero.Controllers;
+package com.nazkord.siemajero.controllers;
 
-import com.nazkord.siemajero.Model.Match;
-import com.nazkord.siemajero.Services.MatchService;
+import com.nazkord.siemajero.model.Match;
+import com.nazkord.siemajero.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;

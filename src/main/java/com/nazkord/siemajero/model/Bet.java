@@ -1,18 +1,30 @@
-package com.nazkord.siemajero.Model;
+package com.nazkord.siemajero.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Bet {
-    private Long id;
-    private Match match;
-    private User user;
-    private Score matchScore;
-    // TODO: make result ENUM class
-    private int result;
 
-    public Bet(Long id, Match match, User user, Score matchScore, int result) {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne
+    private Match match;
+
+    @OneToOne
+    private User user;
+
+    @OneToOne
+    private Score score;
+
+    private Integer result;
+
+    public Bet(Long id, Match match, User user, Score score, int result) {
         this.id = id;
         this.match = match;
         this.user = user;
-        this.matchScore = matchScore;
+        this.score = score;
         this.result = result;
     }
 
@@ -43,12 +55,12 @@ public class Bet {
         this.user = user;
     }
 
-    public Score getMatchScore() {
-        return matchScore;
+    public Score getScore() {
+        return score;
     }
 
-    public void setMatchScore(Score matchScore) {
-        this.matchScore = matchScore;
+    public void setScore(Score score) {
+        this.score = score;
     }
 
     public int getResult() {

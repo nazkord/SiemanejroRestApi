@@ -1,9 +1,10 @@
-package com.nazkord.siemajero.Controllers;
+package com.nazkord.siemajero.controllers;
 
-import com.nazkord.siemajero.Model.Bet;
-import com.nazkord.siemajero.Model.User;
-import com.nazkord.siemajero.Services.BetService;
-import com.nazkord.siemajero.Services.UserService;
+import com.nazkord.siemajero.model.Bet;
+import com.nazkord.siemajero.model.User;
+import com.nazkord.siemajero.security.Role;
+import com.nazkord.siemajero.services.BetService;
+import com.nazkord.siemajero.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class BetController {
     public Map<Long, Bet> getAllBets(SecurityContextHolderAwareRequestWrapper securityWrapper,
                                      @RequestParam(required = false) Long matchId, HttpSession httpSession) {
 
-        if(securityWrapper.isUserInRole("ADMIN")) {
+        if(securityWrapper.isUserInRole("ADMIN")) { // get all bets
             return betService.getAllBets();
         } else if(securityWrapper.isUserInRole("USER")) {
             if (matchId == null) { // get all user's bets
@@ -41,8 +42,12 @@ public class BetController {
     }
 
     @RequestMapping(value = "/{betId}", method = RequestMethod.GET)
-    public Bet getBet(@PathVariable Long betId, HttpSession httpSession) {
-        return betService.getBetById(betId, getLoggedInUser(httpSession).getId());
+    public Bet getBet(@PathVariable Long betId, HttpSession httpSession, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+        if(securityWrapper.isUserInRole(String.valueOf(Role.ADMIN))) {
+            return betService.getBet(betId);
+        } else {
+            return betService.getBetById(betId, getLoggedInUser(httpSession).getId());
+        }
     }
 
     // in UI add bet button in matchActivity
@@ -71,7 +76,6 @@ public class BetController {
     }
 
     @RequestMapping(value = "/{betId}", method = RequestMethod.DELETE)
-    //TODO: should i check whether this bet exists?
     public void deleteBet(@PathVariable Long betId) {
         betService.deleteBet(betId);
     }

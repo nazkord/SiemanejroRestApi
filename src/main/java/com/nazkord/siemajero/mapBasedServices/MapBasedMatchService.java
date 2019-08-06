@@ -1,11 +1,8 @@
-package com.nazkord.siemajero.MapBasedServices;
+package com.nazkord.siemajero.mapBasedServices;
 
-import com.nazkord.siemajero.Model.Bet;
-import com.nazkord.siemajero.Model.Match;
-import com.nazkord.siemajero.Model.Score;
-import com.nazkord.siemajero.Services.BetService;
-import com.nazkord.siemajero.Services.MatchService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nazkord.siemajero.model.Match;
+import com.nazkord.siemajero.model.Score;
+import com.nazkord.siemajero.services.MatchService;
 
 import java.util.*;
 
