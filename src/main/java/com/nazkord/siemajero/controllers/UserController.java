@@ -54,16 +54,22 @@ public class UserController {
                 return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
-            return new ResponseEntity<>("Error while posting", HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>("Forbidden", HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId}")
-    public void updateUser(@PathVariable Long userId, @RequestBody User userToUpdate, SecurityContextHolderAwareRequestWrapper securityWrapper) {
-        if (isOperationPermitted(userId, securityWrapper)) {
-            userToUpdate.setId(userId);
-            userService.updateUser(userToUpdate);
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User userToUpdate, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+        try {
+            if (isOperationPermitted(userId, securityWrapper)) {
+                userToUpdate.setId(userId);
+                userService.updateUser(userToUpdate);
+            }
+        } catch (Exception e) {
+            String errorMessage = "Error while updating <== error";
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
@@ -77,7 +83,7 @@ public class UserController {
         if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             return true;
         }
-        // check whether the logged user get his own profile
+        //TODO: check whether the logged user want to get his own profile (getRemoteUser return name)
         User currentUser = userService.getUserByName(securityWrapper.getRemoteUser());
         return currentUser.getId().equals(userId);
     }
