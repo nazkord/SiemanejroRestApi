@@ -38,15 +38,18 @@ public class UserController {
         }
     }
 
-    //TODO: make sure to check add only unique name
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> postUser(@RequestBody User newUser, SecurityContextHolderAwareRequestWrapper securityWrapper) {
         if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             try {
-                userService.addUser(newUser);
-                return new ResponseEntity<>(HttpStatus.OK);
+                if(userService.isUniqueName(newUser.getName())) {
+                    userService.addUser(newUser);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                } else {
+                    String errorMessage = "Not UNIQUE name <== error";
+                    return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+                }
             } catch (Exception e) {
-//                if()
                 String errorMessage = e + " <== error";
                 return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -74,7 +77,7 @@ public class UserController {
         if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             return true;
         }
-        // check whether the logged user change his own profile
+        // check whether the logged user get his own profile
         User currentUser = userService.getUserByName(securityWrapper.getRemoteUser());
         return currentUser.getId().equals(userId);
     }

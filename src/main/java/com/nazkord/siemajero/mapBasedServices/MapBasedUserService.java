@@ -40,5 +40,8 @@ public class MapBasedUserService implements UserService {
         users.remove(userId);
     }
 
-
+    @Override
+    public boolean isUniqueName(String name) {
+        return false;
+    }
 }

@@ -34,7 +34,7 @@ public class DbBasedUserService implements UserService {
 
     @Override
     public User getUserByName(String name) {
-        return userRepository.findByName(name);
+        return userRepository.findByName(name).get();
     }
 
     @Override
@@ -54,6 +54,7 @@ public class DbBasedUserService implements UserService {
 
     @Override
     public boolean isUniqueName(String name) {
-        return true;
+        Optional optionalUser = userRepository.findByName(name);
+        return !optionalUser.isPresent();
     }
 }
