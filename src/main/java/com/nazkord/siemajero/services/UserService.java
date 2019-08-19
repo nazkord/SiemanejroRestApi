@@ -11,4 +11,5 @@ public interface UserService {
     void updateUser(User userToUpdate);
     void addUser(User newUser);
     void deleteUser(Long userId);
+    boolean isUniqueName(String name);
 }

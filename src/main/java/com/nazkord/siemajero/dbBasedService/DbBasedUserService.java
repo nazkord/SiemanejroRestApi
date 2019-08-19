@@ -51,4 +51,9 @@ public class DbBasedUserService implements UserService {
     public void deleteUser(Long userId) {
         userRepository.delete(getUserById(userId));
     }
+
+    @Override
+    public boolean isUniqueName(String name) {
+        return true;
+    }
 }

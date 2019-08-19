@@ -46,6 +46,7 @@ public class UserController {
                 userService.addUser(newUser);
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (Exception e) {
+//                if()
                 String errorMessage = e + " <== error";
                 return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
             }
