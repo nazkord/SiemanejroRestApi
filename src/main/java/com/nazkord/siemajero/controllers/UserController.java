@@ -21,7 +21,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Map<Long, User> getAllUsers(SecurityContextHolderAwareRequestWrapper securityWrapper) {
-        if (securityWrapper.isUserInRole(String.valueOf(Role.ADMIN))) {
+        if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             return userService.getAllUsers();
         } else {
             return Collections.emptyMap();
@@ -64,12 +64,13 @@ public class UserController {
             if (isOperationPermitted(userId, securityWrapper)) {
                 userToUpdate.setId(userId);
                 userService.updateUser(userToUpdate);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
         } catch (Exception e) {
             String errorMessage = "Error while updating <== error";
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("bad permission <== error", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
@@ -83,7 +84,7 @@ public class UserController {
         if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             return true;
         }
-        //TODO: check whether the logged user want to get his own profile (getRemoteUser return name)
+        // check whether the logged user want to get his own profile (getRemoteUser return name)
         User currentUser = userService.getUserByName(securityWrapper.getRemoteUser());
         return currentUser.getId().equals(userId);
     }

@@ -32,7 +32,7 @@ public class RepoConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
+        em.setDataSource(betServiceDataSource());
         em.setPackagesToScan("com.nazkord.siemajero.model", "com.nazkord.siemajero.repositories");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -43,7 +43,7 @@ public class RepoConfig {
     }
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource betServiceDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");

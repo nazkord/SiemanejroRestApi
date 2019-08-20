@@ -15,6 +15,9 @@ public class User {
     @Column(unique = true)
     private String name;
 
+    @Column(name = "password")
+    private String password;
+
     private String roleName;
 
     public User() {
@@ -24,6 +27,14 @@ public class User {
         this.id = id;
         this.name = name;
 //        this.bets = bets;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
