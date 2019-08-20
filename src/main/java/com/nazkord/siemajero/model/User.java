@@ -69,5 +69,12 @@ public class User {
 //    public void setRole(Role role) {
 //        this.roleName = role.name();
 //    }
+
+    public void copyFrom(User user) {
+        setName(user.getName());
+        setRoleName(user.getRoleName());
+        setPassword(user.getPassword());
+    }
+
 }
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @Service
 public class DbBasedUserService implements UserService {
@@ -39,14 +38,9 @@ public class DbBasedUserService implements UserService {
     }
 
     @Override
-    public void updateUser(User userToUpdate) {
-
-        //TODO: check if there is better method to update user?
-
-        User user = userRepository.findById(userToUpdate.getId()).get();
-        user.setName(userToUpdate.getName());
-        user.setRoleName(userToUpdate.getRoleName());
-        user.setPassword(userToUpdate.getPassword());
+    public void updateUser(User user) {
+        User userToUpdate = userRepository.findById(user.getId()).get();
+        userToUpdate.copyFrom(user);
         userRepository.save(user);
     }
 
