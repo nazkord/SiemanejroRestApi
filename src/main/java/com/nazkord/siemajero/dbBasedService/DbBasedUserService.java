@@ -4,6 +4,7 @@ import com.nazkord.siemajero.model.User;
 import com.nazkord.siemajero.repositories.UserRepository;
 import com.nazkord.siemajero.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,6 +16,9 @@ public class DbBasedUserService implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Map<Long, User> getAllUsers() {
@@ -40,12 +44,14 @@ public class DbBasedUserService implements UserService {
     @Override
     public void updateUser(User user) {
         User userToUpdate = userRepository.findById(user.getId()).get();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userToUpdate.copyFrom(user);
         userRepository.save(user);
     }
 
     @Override
     public void addUser(User newUser) {
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
     }
 
