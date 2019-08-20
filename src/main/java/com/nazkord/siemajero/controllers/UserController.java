@@ -65,12 +65,13 @@ public class UserController {
                 userToUpdate.setId(userId);
                 userService.updateUser(userToUpdate);
                 return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("bad permission <== error", HttpStatus.METHOD_NOT_ALLOWED);
             }
         } catch (Exception e) {
             String errorMessage = "Error while updating <== error";
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("bad permission <== error", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
