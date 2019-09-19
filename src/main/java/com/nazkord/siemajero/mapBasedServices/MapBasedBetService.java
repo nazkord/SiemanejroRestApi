@@ -1,7 +1,7 @@
 package com.nazkord.siemajero.mapBasedServices;
 
 import com.nazkord.siemajero.model.Bet;
-import com.nazkord.siemajero.model.Score;
+import com.nazkord.siemajero.model.dto.footballData.Score;
 import com.nazkord.siemajero.services.BetService;
 import com.nazkord.siemajero.services.MatchService;
 import com.nazkord.siemajero.services.UserService;

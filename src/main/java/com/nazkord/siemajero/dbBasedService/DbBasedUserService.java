@@ -31,7 +31,9 @@ public class DbBasedUserService implements UserService {
     public User getUserById(Long userId) {
         Optional optionalUser = userRepository.findById(userId);
         if(optionalUser.isPresent()) {
-            return (User) optionalUser.get();
+            User user = (User) optionalUser.get();
+            user.setPassword("#######");
+            return user;
         }
         return null;
     }

@@ -1,5 +1,8 @@
 package com.nazkord.siemajero.model;
 
+import com.nazkord.siemajero.model.dto.footballData.Match;
+import com.nazkord.siemajero.model.dto.footballData.Score;
+
 import javax.persistence.*;
 
 @Entity

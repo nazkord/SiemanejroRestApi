@@ -6,6 +6,7 @@ import com.nazkord.siemajero.security.Role;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -15,7 +16,6 @@ public class User {
     @Column(unique = true)
     private String name;
 
-    @Column(name = "password")
     private String password;
 
     private String roleName;
@@ -26,7 +26,6 @@ public class User {
     public User(Long id, String name) {
         this.id = id;
         this.name = name;
-//        this.bets = bets;
     }
 
     public String getPassword() {
@@ -57,18 +56,9 @@ public class User {
         return roleName;
     }
 
-//    @JsonIgnore
-//    public Role getRole() {
-//        return Role.valueOf(roleName);
-//    }
-//
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-//
-//    public void setRole(Role role) {
-//        this.roleName = role.name();
-//    }
 
     public void copyFrom(User user) {
         setName(user.getName());

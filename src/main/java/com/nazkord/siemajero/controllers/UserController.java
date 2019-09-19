@@ -16,8 +16,12 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public Map<Long, User> getAllUsers(SecurityContextHolderAwareRequestWrapper securityWrapper) {
