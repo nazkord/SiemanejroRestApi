@@ -39,7 +39,7 @@ public class FootballDataClient {
 
 
     @Scheduled(fixedDelay = 20000)
-    public void loadAllTodayMatches() throws IOException {
+    public void loadAllTodayMatches() {
         System.out.println("CHECKING");
 
         MatchResponse matchesInResponse = webClient.get()

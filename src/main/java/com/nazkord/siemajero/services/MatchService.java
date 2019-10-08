@@ -2,11 +2,11 @@ package com.nazkord.siemajero.services;
 
 import com.nazkord.siemajero.model.dto.footballData.Match;
 
-import java.util.Map;
+import java.util.List;
 
 public interface MatchService {
-    Map<Long, Match> getAllMatches();
+    List<Match> getAllMatches();
     Match getMatchById(Long matchId);
-    //Map<Long, Match> getMatchesByCompetition(Long competitionId);
+    List<Match> getMatchesByCompetition(Long competitionId);
     //public Mono<MatchResponse> getMatchesByDate(String dateFrom, String dateTo);
 }

@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DbBasedUserService implements UserService {
@@ -21,9 +19,9 @@ public class DbBasedUserService implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Map<Long, User> getAllUsers() {
-        Map<Long, User> users = new HashMap<>();
-        userRepository.findAll().forEach(user -> users.put(user.getId(), user));
+    public List<User> getAllUsers() {
+        List<User> users = new LinkedList<>();
+        userRepository.findAll().forEach(users::add);
         return users;
     }
 

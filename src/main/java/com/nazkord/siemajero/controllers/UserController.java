@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,11 +26,22 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Map<Long, User> getAllUsers(SecurityContextHolderAwareRequestWrapper securityWrapper) {
-        if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
-            return userService.getAllUsers();
-        } else {
-            return Collections.emptyMap();
+    public List<User> getAllUsers(SecurityContextHolderAwareRequestWrapper securityWrapper,
+                                  @RequestParam(required = false) String userName) {
+
+        if(userName.isEmpty()) { // if userName doesnt exist
+            if (securityWrapper.isUserInRole(Role.ADMIN.name())) { // get all bets if admin
+                return userService.getAllUsers();
+            } else {
+                return null;
+            }
+        } else { // if exist
+            if(isOperationPermitted(userService.getUserByName(userName).getId(), securityWrapper)) {
+                User user = userService.getUserByName(userName);
+                return Collections.singletonList(user);
+            } else {
+                return null;
+            }
         }
     }
 

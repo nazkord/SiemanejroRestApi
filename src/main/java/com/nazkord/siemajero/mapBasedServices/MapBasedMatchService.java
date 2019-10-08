@@ -17,7 +17,7 @@ public class MapBasedMatchService implements MatchService {
 //            put(132L, new Match("Juventus", "ManCity", new Score(2, 1), 132L));
 //    }};
 
-    public Map<Long, Match> getAllMatches() {
+    public List<Match> getAllMatches() {
         return null;
     }
 
@@ -25,5 +25,8 @@ public class MapBasedMatchService implements MatchService {
         return null;
     }
 
-
+    @Override
+    public List<Match> getMatchesByCompetition(Long competitionId) {
+        return null;
+    }
 }

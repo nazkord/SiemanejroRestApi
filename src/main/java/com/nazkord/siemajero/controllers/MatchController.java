@@ -4,7 +4,8 @@ import com.nazkord.siemajero.model.dto.footballData.Match;
 import com.nazkord.siemajero.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/matches")
@@ -14,8 +15,12 @@ public class MatchController {
     private MatchService matchService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Map<Long,Match> getAllMatches() {
-        return matchService.getAllMatches();
+    public List<Match> getAllMatches(@RequestParam(required = false) Long competitionId) {
+        if(competitionId == null) {
+            return matchService.getAllMatches();
+        } else {
+            return matchService.getMatchesByCompetition(competitionId);
+        }
     }
 
     @RequestMapping("/{matchId}")

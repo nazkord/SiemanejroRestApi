@@ -6,9 +6,7 @@ import com.nazkord.siemajero.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DbBasedMatchService implements MatchService {
@@ -17,22 +15,21 @@ public class DbBasedMatchService implements MatchService {
     private MatchRepository matchRepository;
 
     @Override
-    public Map<Long, Match> getAllMatches() {
-        Map<Long, Match> matches = new HashMap<>();
-        matchRepository.findAll().forEach(match -> matches.put(match.getId(), match));
+    public List<Match> getAllMatches() {
+        List<Match> matches = new ArrayList<>();
+        matchRepository.findAll().forEach(matches::add);
         return matches;
     }
 
     @Override
     public Match getMatchById(Long matchId) {
-
-        //TODO: make this work with ifPresent
-
         Optional<Match> match = matchRepository.findById(matchId);
-        if(match.isPresent()) {
-            return match.get();
-        } else {
-            return null;
-        }
+        return match.orElse(null);
+    }
+
+    //TODO: by default get those matches from today
+    @Override
+    public List<Match> getMatchesByCompetition(Long competitionId) {
+        return matchRepository.findByCompetitionId(competitionId);
     }
 }
