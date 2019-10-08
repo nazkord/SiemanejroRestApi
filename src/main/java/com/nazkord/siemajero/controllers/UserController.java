@@ -29,7 +29,7 @@ public class UserController {
     public List<User> getAllUsers(SecurityContextHolderAwareRequestWrapper securityWrapper,
                                   @RequestParam(required = false) String userName) {
 
-        if(userName.isEmpty()) { // if userName doesnt exist
+        if(userName == null) { // if userName doesnt exist
             if (securityWrapper.isUserInRole(Role.ADMIN.name())) { // get all bets if admin
                 return userService.getAllUsers();
             } else {
@@ -98,13 +98,13 @@ public class UserController {
         }
     }
 
-    private boolean isOperationPermitted(Long userId, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+    private boolean isOperationPermitted(Long userIdToCheck, SecurityContextHolderAwareRequestWrapper securityWrapper) {
         if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             return true;
         }
         // check whether the logged user want to get his own profile (getRemoteUser return name)
         User currentUser = userService.getUserByName(securityWrapper.getRemoteUser());
-        return currentUser.getId().equals(userId);
+        return currentUser.getId().equals(userIdToCheck);
     }
 
 }

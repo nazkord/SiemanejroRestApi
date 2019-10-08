@@ -2,6 +2,7 @@ package com.nazkord.siemajero.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nazkord.siemajero.security.Role;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
 import javax.persistence.*;
 
@@ -64,6 +65,7 @@ public class User {
         setName(user.getName());
         setRoleName(user.getRoleName());
         setPassword(user.getPassword());
+        setRoleName(user.getRoleName());
     }
 
 }

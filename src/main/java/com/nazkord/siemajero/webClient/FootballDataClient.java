@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +36,6 @@ public class FootballDataClient {
 
     //TODO: find out where and how throw JsonParseException
 
-
     @Scheduled(fixedDelay = 20000)
     public void loadAllTodayMatches() {
         System.out.println("CHECKING");
@@ -56,6 +54,5 @@ public class FootballDataClient {
         System.out.println("matches = " + matches);
 
         dbService.sync(matches);
-
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,36 +26,43 @@ public class BetController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Map<Long, Bet> getAllBets(SecurityContextHolderAwareRequestWrapper securityWrapper,
-                                     @RequestParam(required = false) Long matchId, HttpSession httpSession) {
+    //TODO: replace checking isUserInRole many times (???)
 
-        if(securityWrapper.isUserInRole("ADMIN")) { // get all bets
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Bet> getAllBets(SecurityContextHolderAwareRequestWrapper securityWrapper,
+                                @RequestParam(required = false) Long matchId) {
+
+        if(securityWrapper.isUserInRole(Role.ADMIN.name())) { // get all bets
             return betService.getAllBets();
-        } else if(securityWrapper.isUserInRole("USER")) {
+        } else if(securityWrapper.isUserInRole(Role.USER.name())) {
             if (matchId == null) { // get all user's bets
-                return betService.getAllUserBets(getLoggedInUser(httpSession).getId());
+                User currentUser = userService.getUserByName(securityWrapper.getRemoteUser());
+                return betService.getAllUserBets(currentUser.getId());
             } else { // get only bet for giver match
                 return betService.getBetsByMatchId(matchId);
             }
         }
-        return Collections.emptyMap();
+        return Collections.emptyList();
     }
 
     @RequestMapping(value = "/{betId}", method = RequestMethod.GET)
-    public Bet getBet(@PathVariable Long betId, HttpSession httpSession, SecurityContextHolderAwareRequestWrapper securityWrapper) {
-        if(securityWrapper.isUserInRole(String.valueOf(Role.ADMIN))) {
-            return betService.getBet(betId);
+    public Bet getBet(@PathVariable Long betId, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+        Bet betToReturn = betService.getBetById(betId);
+        Long userIdToCheck = betToReturn.getUser().getId();
+        if(isOperationPermitted(userIdToCheck, securityWrapper)) {
+            return betToReturn;
         } else {
-            return betService.getBetById(betId, getLoggedInUser(httpSession).getId());
+            return null;
         }
     }
 
-    // in UI add bet button in matchActivity
+    //TODO: in UI add bet button in matchActivity
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addBet(@RequestBody Bet bet, HttpSession httpSession) {
-        if(bet.getUser().getId().equals(getLoggedInUser(httpSession).getId())) {
-            return new ResponseEntity<>(betService.addBet(bet), HttpStatus.OK);
+    public ResponseEntity<?> addBet(@RequestBody Bet bet, SecurityContextHolderAwareRequestWrapper secutiryWrapper) {
+        if(isOperationPermitted(bet.getUser().getId(), secutiryWrapper)) {
+            betService.addBet(bet);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("what are you doing?", HttpStatus.FORBIDDEN);
         }
@@ -64,8 +72,7 @@ public class BetController {
     public ResponseEntity<?> updateBet(@RequestBody Bet bet, @PathVariable Long betId) {
         if(bet.getId().equals(betId)) {
             try {
-                betService.updateBet(bet);
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(betService.updateBet(bet), HttpStatus.OK);
             } catch (Exception e) {
                 String errorMessage = e + " <== error";
                 return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -80,8 +87,13 @@ public class BetController {
         betService.deleteBet(betId);
     }
 
-    // TODO: work with authenticated user
-    private User getLoggedInUser(HttpSession httpSession) {
-        return userService.getUserById(1L);
+    //TODO: do smth with this duplicate
+    private boolean isOperationPermitted(Long userIdToCheck, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+        if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
+            return true;
+        }
+        // check whether the logged user want to get his own profile (getRemoteUser return name)
+        User currentUser = userService.getUserByName(securityWrapper.getRemoteUser());
+        return currentUser.getId().equals(userIdToCheck);
     }
 }

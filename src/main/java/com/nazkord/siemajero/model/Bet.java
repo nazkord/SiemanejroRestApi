@@ -73,4 +73,11 @@ public class Bet {
     public void setResult(int result) {
         this.result = result;
     }
+
+    public void copyFrom(Bet bet) {
+        setMatch(bet.getMatch());
+        setUser(bet.getUser());
+        setScore(bet.getScore());
+        setResult(bet.getResult());
+    }
 }

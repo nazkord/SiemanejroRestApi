@@ -2,16 +2,16 @@ package com.nazkord.siemajero.services;
 
 import com.nazkord.siemajero.model.Bet;
 
+import java.util.List;
 import java.util.Map;
 
 public interface BetService {
 
-    Map<Long, Bet> getAllBets();
-    Map<Long, Bet> getAllUserBets(Long userId);
-    Bet getBetById(Long betId, Long userId);
-    Bet getBet(Long betId);
-    Map<Long, Bet> getBetsByMatchId(Long matchId);
-    Bet addBet(Bet bet);
+    List<Bet> getAllBets();
+    List<Bet> getAllUserBets(Long userId);
+    Bet getBetById(Long betId);
+    List<Bet> getBetsByMatchId(Long matchId);
+    void addBet(Bet bet);
     Boolean updateBet(Bet bet);
     void deleteBet(Long betId);
 }
