@@ -9,14 +9,6 @@ import javax.persistence.*;
 @Table(name = "scores")
 public class Score {
 
-    public Score(int i, int x) {
-
-    }
-
-    public Score() {
-    }
-
-
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;

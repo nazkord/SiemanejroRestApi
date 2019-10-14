@@ -19,15 +19,15 @@ public class Bet {
     private User user;
 
     @OneToOne
-    private Score score;
+    private Score userScore;
 
     private Integer result;
 
-    public Bet(Long id, Match match, User user, Score score, int result) {
+    public Bet(Long id, Match match, User user, Score userScore, int result) {
         this.id = id;
         this.match = match;
         this.user = user;
-        this.score = score;
+        this.userScore = userScore;
         this.result = result;
     }
 
@@ -58,12 +58,12 @@ public class Bet {
         this.user = user;
     }
 
-    public Score getScore() {
-        return score;
+    public Score getUserScore() {
+        return userScore;
     }
 
-    public void setScore(Score score) {
-        this.score = score;
+    public void setUserScore(Score userScore) {
+        this.userScore = userScore;
     }
 
     public int getResult() {
@@ -77,7 +77,7 @@ public class Bet {
     public void copyFrom(Bet bet) {
         setMatch(bet.getMatch());
         setUser(bet.getUser());
-        setScore(bet.getScore());
+        setUserScore(bet.getUserScore());
         setResult(bet.getResult());
     }
 }
