@@ -10,6 +10,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 @EnableScheduling
 public class FootballDataClient {
 
+    private static final String datePattern = "YYYY-MM-dd";
     private static final String URL = "https://api.football-data.org/v2";
     private static final String TOKEN = "7d273acc9c9548c9885398f85780fe2e";
 
@@ -41,7 +44,7 @@ public class FootballDataClient {
         System.out.println("CHECKING");
 
         MatchResponse matchesInResponse = webClient.get()
-                .uri("/matches")
+                .uri("/matches?" + creatorDateString())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(MatchResponse.class)
@@ -54,5 +57,16 @@ public class FootballDataClient {
         System.out.println("matches = " + matches);
 
         dbService.sync(matches);
+    }
+
+    private String creatorDateString() {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
+        currentDate.format(formatter);
+        String currentDateString = currentDate.toString();
+
+        String nextDateString = currentDate.plusDays(10).toString();
+
+        return "dateFrom=" + currentDateString + "&dateTo=" + nextDateString;
     }
 }

@@ -30,7 +30,6 @@ public class DbService {
                 .map(Match::getAwayTeam)
                 .collect(Collectors.toList());
 
-
         List<FootBallTeam> homeTeams = matches.stream()
                 .map(Match::getHomeTeam)
                 .collect(Collectors.toList());
@@ -42,6 +41,7 @@ public class DbService {
         List<Score> scores = matches.stream()
                 .map(Match::getScore)
                 .collect(Collectors.toList());
+
         List<FullTimeResult> fullTimeResults = matches.stream()
                 .map(Match::getScore)
                 .map(Score::getFullTime)
@@ -54,6 +54,5 @@ public class DbService {
         footballTeamRepository.saveAll(homeTeams);
         footballTeamRepository.saveAll(awayTeams);
         matchRepository.saveAll(matches);
-
     }
 }
