@@ -59,6 +59,8 @@ public class DbBasedBetService implements BetService {
         }
     }
 
+    //TODO: this method DOESN'T WORK
+
     @Override
     public void deleteBet(Long betId) {
         betRepository.findById(betId).ifPresent(bet -> betRepository.delete(bet));

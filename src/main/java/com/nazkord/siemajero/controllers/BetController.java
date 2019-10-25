@@ -1,6 +1,7 @@
 package com.nazkord.siemajero.controllers;
 
 import com.nazkord.siemajero.model.Bet;
+import com.nazkord.siemajero.model.BetList;
 import com.nazkord.siemajero.model.User;
 import com.nazkord.siemajero.security.Role;
 import com.nazkord.siemajero.services.BetService;
@@ -12,6 +13,7 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -56,16 +58,16 @@ public class BetController {
         }
     }
 
-    //TODO: in UI add bet button in matchActivity
-
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addBet(@RequestBody Bet bet, SecurityContextHolderAwareRequestWrapper secutiryWrapper) {
-        if(isOperationPermitted(bet.getUser().getId(), secutiryWrapper)) {
-            betService.addBet(bet);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("what are you doing?", HttpStatus.FORBIDDEN);
+    public ResponseEntity<?> addBet(@RequestBody BetList bets, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+        for(Bet bet : bets) {
+            if (isOperationPermitted(bet.getUser().getId(), securityWrapper)) {
+                betService.addBet(bet);
+            } else {
+                return new ResponseEntity<>("what are you doing?", HttpStatus.FORBIDDEN);
+            }
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{betId}")

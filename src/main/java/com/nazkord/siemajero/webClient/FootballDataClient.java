@@ -59,7 +59,7 @@ public class FootballDataClient {
         dbService.sync(matches);
     }
 
-    private String creatorDateString() {
+    public String creatorDateString() {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
         currentDate.format(formatter);

@@ -80,4 +80,15 @@ public class Bet {
         setUserScore(bet.getUserScore());
         setResult(bet.getResult());
     }
+
+    @Override
+    public String toString() {
+        return "Bet{" +
+                "id=" + id +
+                ", match=" + match +
+                ", user=" + user +
+                ", userScore=" + userScore +
+                ", result=" + result +
+                '}';
+    }
 }
