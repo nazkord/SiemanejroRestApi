@@ -12,20 +12,20 @@ public class Match {
     @Id
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Competition competition;
     private String utcDate;
     private String status;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Score score;
     private Integer matchday;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "home_team_id")
     private FootBallTeam homeTeam;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "away_team_id")
     private FootBallTeam awayTeam;
 

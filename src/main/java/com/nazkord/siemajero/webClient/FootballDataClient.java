@@ -39,7 +39,7 @@ public class FootballDataClient {
 
     //TODO: find out where and how throw JsonParseException
 
-//    @Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelay = 20000)
     public void loadAllTodayMatches() {
         System.out.println("CHECKING");
 
