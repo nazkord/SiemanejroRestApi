@@ -58,9 +58,11 @@ public class BetController {
         }
     }
 
+    //TODO: methods should return responseEntity success or error (according an article)
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addBet(@RequestBody BetList bets, SecurityContextHolderAwareRequestWrapper securityWrapper) {
-        for(Bet bet : bets) {
+    public ResponseEntity<?> addBet(@RequestBody BetList betList, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+        for(Bet bet : betList) {
             if (isOperationPermitted(bet.getUser().getId(), securityWrapper)) {
                 betService.addBet(bet);
             } else {

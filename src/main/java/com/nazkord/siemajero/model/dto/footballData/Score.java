@@ -15,7 +15,7 @@ public class Score {
 
     private String winner;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private FullTimeResult fullTime;
 
     public Long getId() {
