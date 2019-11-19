@@ -28,8 +28,6 @@ public class DbBasedBetService implements BetService {
         return betRepository.findByUserId(userId);
     }
 
-    //TODO: is this good approach using Optionals?
-
     @Override
     public Bet getBetById(Long betId) {
         return betRepository.findById(betId).orElse(null);
@@ -58,8 +56,6 @@ public class DbBasedBetService implements BetService {
             return false;
         }
     }
-
-    //TODO: this method DOESN'T WORK
 
     @Override
     public void deleteBet(Long betId) {

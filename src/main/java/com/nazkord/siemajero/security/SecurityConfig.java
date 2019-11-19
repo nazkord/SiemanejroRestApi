@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.
                 jdbcAuthentication().dataSource(betServiceDataSource)
+                //TODO: this should be done by token !
                 .usersByUsernameQuery("select name,password, 1 enabled from USERS where name=?")
                 .authoritiesByUsernameQuery("select name, roleName from USERS where name=?");
     }
@@ -34,16 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable();
+                .logout();
     }
-
-    //TODO: logout!!!
 
     @Bean
     public PasswordEncoder encoder() {

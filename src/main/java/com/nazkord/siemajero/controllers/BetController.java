@@ -29,6 +29,8 @@ public class BetController {
     private UserService userService;
 
     //TODO: replace checking isUserInRole many times (???)
+    //TODO: methods should return responseBody with list if everything went good and
+    // with error in body when sth went wrong
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Bet> getAllBets(SecurityContextHolderAwareRequestWrapper securityWrapper,
@@ -40,7 +42,7 @@ public class BetController {
             if (matchId == null) { // get all user's bets
                 User currentUser = userService.getUserByName(securityWrapper.getRemoteUser());
                 return betService.getAllUserBets(currentUser.getId());
-            } else { // get only bet for giver match
+            } else { // get only bet for given match
                 return betService.getBetsByMatchId(matchId);
             }
         }
@@ -82,7 +84,7 @@ public class BetController {
                 return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
-            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("not properly request", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -91,7 +93,7 @@ public class BetController {
         betService.deleteBet(betId);
     }
 
-    //TODO: do smth with this duplicate
+    //TODO: do smth with this duplicate (maybe create some util class)
     private boolean isOperationPermitted(Long userIdToCheck, SecurityContextHolderAwareRequestWrapper securityWrapper) {
         if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             return true;

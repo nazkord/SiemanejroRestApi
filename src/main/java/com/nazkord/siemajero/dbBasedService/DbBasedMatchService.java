@@ -27,7 +27,7 @@ public class DbBasedMatchService implements MatchService {
         return match.orElse(null);
     }
 
-    //TODO: by default get those matches from today, now getting ALL matches from this competition
+    //TODO: by default get those matches from today (some period of time), now getting ALL matches from this competition
     @Override
     public List<Match> getMatchesByCompetition(Long competitionId) {
         return matchRepository.findByCompetitionId(competitionId);

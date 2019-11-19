@@ -37,7 +37,7 @@ public class FootballDataClient {
 
     //TODO: think out of better idea (now downloading every matches for 2 weeks)
 
-    //TODO: find out where and how throw JsonParseException
+    //TODO: find out where and how throw JsonParseException (ask if throwing a good idea?)
 
     @Scheduled(fixedDelay = 20000)
     public void loadAllTodayMatches() {
