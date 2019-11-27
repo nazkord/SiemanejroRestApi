@@ -8,4 +8,6 @@ import java.util.List;
 public interface MatchRepository extends CrudRepository<Match, Long> {
     // there should by my own methods
     List<Match> findByCompetitionId(Long competitionId);
+    List<Match> findByCompetitionIdIn(List<Long> competitionIdsList);
+
 }

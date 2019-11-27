@@ -15,11 +15,11 @@ public class MatchController {
     private MatchService matchService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Match> getAllMatches(@RequestParam(required = false) Long competitionId) {
-        if(competitionId == null) {
+    public List<Match> getAllMatches(@RequestParam(required = false) List<Long> competitionIds) {
+        if(competitionIds == null) {
             return matchService.getAllMatches();
         } else {
-            return matchService.getMatchesByCompetition(competitionId);
+            return matchService.getMatchesByCompetitionIds(competitionIds);
         }
     }
 

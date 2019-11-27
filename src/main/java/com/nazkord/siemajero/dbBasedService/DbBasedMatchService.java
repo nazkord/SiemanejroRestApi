@@ -38,6 +38,11 @@ public class DbBasedMatchService implements MatchService {
         return getParsedMatchesWeekRange(matchRepository.findByCompetitionId(competitionId));
     }
 
+    @Override
+    public List<Match> getMatchesByCompetitionIds(List<Long> competitionIds) {
+        return getParsedMatchesWeekRange(matchRepository.findByCompetitionIdIn(competitionIds));
+    }
+
     // return list of matches from a week before to a week later
     private List<Match> getParsedMatchesWeekRange(List<Match> matches) {
         return matches.stream()
