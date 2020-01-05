@@ -39,21 +39,16 @@ public class DbBasedBetService implements BetService {
     }
 
     @Override
-    public void addBet(Bet bet) {
-        betRepository.save(bet);
-    }
-
-    @Override
-    public Boolean updateBet(Bet bet) {
-
-        Optional<Bet> optionalBet = betRepository.findById(bet.getId());
-        if(optionalBet.isPresent()) {
-            Bet betToUpdate = optionalBet.get();
-            betToUpdate.copyFrom(bet);
-            betRepository.save(betToUpdate);
-            return true;
+    public void saveOrUpdateBet(Bet bet) {
+        if(bet.getId() == null) {
+            betRepository.save(bet);
         } else {
-            return false;
+            Optional<Bet> optionalBet = betRepository.findById(bet.getId());
+            if (optionalBet.isPresent()) {
+                Bet betToUpdate = optionalBet.get();
+                betToUpdate.copyFrom(bet);
+                betRepository.save(betToUpdate);
+            }
         }
     }
 

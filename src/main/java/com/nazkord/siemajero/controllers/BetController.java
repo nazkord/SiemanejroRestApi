@@ -12,11 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/bets")
@@ -66,7 +63,7 @@ public class BetController {
     public ResponseEntity<?> addBet(@RequestBody BetList betList, SecurityContextHolderAwareRequestWrapper securityWrapper) {
         for(Bet bet : betList) {
             if (isOperationPermitted(bet.getUser().getId(), securityWrapper)) {
-                betService.addBet(bet);
+                betService.saveOrUpdateBet(bet);
             } else {
                 return new ResponseEntity<>("what are you doing?", HttpStatus.FORBIDDEN);
             }
@@ -78,7 +75,7 @@ public class BetController {
     public ResponseEntity<?> updateBet(@RequestBody Bet bet, @PathVariable Long betId) {
         if(bet.getId().equals(betId)) {
             try {
-                return new ResponseEntity<>(betService.updateBet(bet), HttpStatus.OK);
+                betService.saveOrUpdateBet(bet);
             } catch (Exception e) {
                 String errorMessage = e + " <== error";
                 return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,6 +83,7 @@ public class BetController {
         } else {
             return new ResponseEntity<>("not properly request", HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{betId}", method = RequestMethod.DELETE)

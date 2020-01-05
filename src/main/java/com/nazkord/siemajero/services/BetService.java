@@ -11,7 +11,6 @@ public interface BetService {
     List<Bet> getAllUserBets(Long userId);
     Bet getBetById(Long betId);
     List<Bet> getBetsByMatchId(Long matchId);
-    void addBet(Bet bet);
-    Boolean updateBet(Bet bet);
+    void saveOrUpdateBet(Bet bet);
     void deleteBet(Long betId);
 }

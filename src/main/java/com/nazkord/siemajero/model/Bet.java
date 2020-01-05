@@ -18,7 +18,7 @@ public class Bet {
     @OneToOne
     private User user;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = CascadeType.ALL)
     private Score userScore;
 
     private Integer result;
