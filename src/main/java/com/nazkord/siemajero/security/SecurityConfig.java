@@ -28,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.
                 jdbcAuthentication().dataSource(betServiceDataSource)
                 //TODO: this should be done by token !
-                .usersByUsernameQuery("select name,password, 1 enabled from USERS where name=?")
-                .authoritiesByUsernameQuery("select name, roleName from USERS where name=?");
+                .usersByUsernameQuery("select name,password, 1 enabled from users where name=?")
+                .authoritiesByUsernameQuery("select name, roleName from users where name=?");
     }
 
     @Override
