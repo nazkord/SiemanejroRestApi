@@ -75,6 +75,11 @@ public class UserController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/tokenSignIn")
+    public ResponseEntity<?> verifyToken(@RequestBody String tokenId) {
+        return null;
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User userToUpdate, SecurityContextHolderAwareRequestWrapper securityWrapper) {
         try {
