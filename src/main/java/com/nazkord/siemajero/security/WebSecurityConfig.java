@@ -1,5 +1,6 @@
 package com.nazkord.siemajero.security;
 
+import com.nazkord.siemajero.controllers.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +23,12 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 (debug = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private DataSource betServiceDataSource;
 
     @Autowired
-    public SecurityConfig(DataSource betServiceDataSource) {
+    public WebSecurityConfig(DataSource betServiceDataSource) {
         this.betServiceDataSource = betServiceDataSource;
     }
 
@@ -35,11 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .httpBasic()
-                .and()
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated()
+                .antMatchers(UserController.TOKEN_LOGIN).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic()
                 .and()
                 .logout();
     }

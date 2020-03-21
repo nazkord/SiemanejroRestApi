@@ -3,6 +3,8 @@ package com.nazkord.siemajero.controllers;
 import com.nazkord.siemajero.model.User;
 import com.nazkord.siemajero.security.Role;
 import com.nazkord.siemajero.services.UserService;
+import com.oracle.tools.packager.Log;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +18,18 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "Users", description = "the user API")
 public class UserController {
 
     private final UserService userService;
+    public static final String TOKEN_LOGIN = "/tokenSignIn";
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+
 
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getAllUsers(SecurityContextHolderAwareRequestWrapper securityWrapper,
@@ -73,11 +79,6 @@ public class UserController {
         } else {
             return new ResponseEntity<>("Forbidden", HttpStatus.METHOD_NOT_ALLOWED);
         }
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/tokenSignIn")
-    public ResponseEntity<?> verifyToken(@RequestBody String tokenId) {
-        return null;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId}")
