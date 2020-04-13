@@ -29,8 +29,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
-
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getAllUsers(SecurityContextHolderAwareRequestWrapper securityWrapper,
                                   @RequestParam(required = false) String userName) {
