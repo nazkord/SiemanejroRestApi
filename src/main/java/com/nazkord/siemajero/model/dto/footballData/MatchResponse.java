@@ -10,6 +10,9 @@ public class MatchResponse {
     private ResponseFilters filters;
     private List<Match> matches;
 
+    public MatchResponse() {
+    }
+
     public ResponseFilters getFilters() {
         return filters;
     }

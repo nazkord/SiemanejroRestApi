@@ -7,9 +7,11 @@ import com.nazkord.siemajero.services.DbService;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -26,7 +28,6 @@ public class FootballDataClientTest {
 
         MatchResponse match = mapper.readValue(jsonStream, MatchResponse.class);
 
-
         System.out.println("match = " + match);
     }
 
@@ -39,26 +40,27 @@ public class FootballDataClientTest {
                 .baseUrl(URL)
                 .defaultHeader("X-Auth-Token", TOKEN)
                 .build();
-        String todayMatchesJson = webClient.get()
+        Mono<MatchResponse> todayMatchesJson = webClient.get()
                 .uri("/matches")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(MatchResponse.class)
-                .toString();
+                .bodyToMono(MatchResponse.class);
 
         System.out.println(todayMatchesJson);
 
         ObjectMapper mapper = new ObjectMapper();
 
-        MatchResponse matchesInResponse = mapper.readValue(todayMatchesJson, MatchResponse.class);
+//        MatchResponse matchesInResponse = mapper.readValue(todayMatchesJson.toString(), MatchResponse.class);
 
-        List<Match> matches = matchesInResponse.getMatches();
+//        List<Match> matches = matchesInResponse.getMatches();
 
-        matches.forEach(Match -> System.out.println(Match.toString()));
+//        matches.forEach(Match -> System.out.println(Match.toString()));
     }
 
     @Test
     public void creatorDateStringTest() {
-        assertEquals("dateFrom=2019-10-15&dateTo=2019-10-25", footballDataClient.creatorDateString());
+        LocalDate localDate1 = LocalDate.now();
+        LocalDate localDate2 = localDate1.plusDays(10);
+        assertEquals("dateFrom=" + localDate1.toString() + "&dateTo=" + localDate2.toString(), footballDataClient.creatorDateString());
     }
 }

@@ -6,6 +6,14 @@ import com.nazkord.siemajero.model.User;
 import com.nazkord.siemajero.security.Role;
 import com.nazkord.siemajero.services.BetService;
 import com.nazkord.siemajero.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bets")
+@Tag(name = "Bets", description = "the bet API")
 public class BetController {
 
     @Autowired
@@ -29,9 +38,15 @@ public class BetController {
     //TODO: methods should return responseBody with list if everything went good and
     // with error in body when sth went wrong
 
+    @Operation(summary = "Get all user bets", description = "Get all logged user bets by default. Possibility to filter by matchId", tags = { "Bets" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Bet.class)))) })
+
     @RequestMapping(method = RequestMethod.GET)
     public List<Bet> getAllBets(SecurityContextHolderAwareRequestWrapper securityWrapper,
-                                @RequestParam(required = false) Long matchId) {
+                                @Parameter(description = "Filter bets by matchId. By default is null")
+                                    @RequestParam(required = false) Long matchId) {
 
         if(securityWrapper.isUserInRole(Role.ADMIN.name())) { // get all bets
             return betService.getAllBets();
@@ -71,6 +86,10 @@ public class BetController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Update an existing bet", description = "", tags = { "Bets" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "404", description = "Bet not found") })
     @RequestMapping(method = RequestMethod.PUT, value = "/{betId}")
     public ResponseEntity<?> updateBet(@RequestBody Bet bet, @PathVariable Long betId) {
         if(bet.getId().equals(betId)) {
@@ -81,13 +100,18 @@ public class BetController {
                 return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
-            return new ResponseEntity<>("not properly request", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("not properly request", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Deletes a bet", description = "", tags = { "Bets" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")})
     @RequestMapping(value = "/{betId}", method = RequestMethod.DELETE)
-    public void deleteBet(@PathVariable Long betId) {
+    public void deleteBet(
+            @Parameter(description="Id of the bet to be deleted", required=true)
+                @PathVariable Long betId) {
         betService.deleteBet(betId);
     }
 
