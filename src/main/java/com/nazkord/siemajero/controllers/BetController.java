@@ -44,9 +44,12 @@ public class BetController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Bet.class)))) })
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Bet> getAllBets(SecurityContextHolderAwareRequestWrapper securityWrapper,
-                                @Parameter(description = "Filter bets by matchId. By default is null")
-                                    @RequestParam(required = false) Long matchId) {
+    public List<Bet> getAllBets(
+            @Parameter(description = "Filter bets by matchId. By default is null")
+            @RequestParam(required = false)
+                    Long matchId,
+            @Parameter(schema = @Schema(hidden = true))
+                    SecurityContextHolderAwareRequestWrapper securityWrapper) {
 
         if(securityWrapper.isUserInRole(Role.ADMIN.name())) { // get all bets
             return betService.getAllBets();
@@ -61,8 +64,17 @@ public class BetController {
         return Collections.emptyList();
     }
 
+    @Operation(summary = "Find bet by ID", description = "Return a single bet", tags = { "Bets" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Bet.class)))) })
+
     @RequestMapping(value = "/{betId}", method = RequestMethod.GET)
-    public Bet getBet(@PathVariable Long betId, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+    public Bet getBet(
+            @PathVariable
+                    Long betId,
+            @Parameter(schema = @Schema(hidden = true))
+                    SecurityContextHolderAwareRequestWrapper securityWrapper) {
         Bet betToReturn = betService.getBetById(betId);
         Long userIdToCheck = betToReturn.getUser().getId();
         if(isOperationPermitted(userIdToCheck, securityWrapper)) {
@@ -74,8 +86,19 @@ public class BetController {
 
     //TODO: methods should return responseEntity success or error (according an article)
 
+
+    @Operation(summary = "Add new bet", description = "", tags = { "Bets" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Bet.class)))),
+            @ApiResponse(responseCode = "403", description = "Forbidden operation (Someone else's bet was provided)")})
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addBet(@RequestBody BetList betList, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+    public ResponseEntity<?> addBet(
+            @RequestBody
+                    BetList betList,
+            @Parameter(schema = @Schema(hidden = true))
+                    SecurityContextHolderAwareRequestWrapper securityWrapper) {
         for(Bet bet : betList) {
             if (isOperationPermitted(bet.getUser().getId(), securityWrapper)) {
                 betService.saveOrUpdateBet(bet);
@@ -88,7 +111,8 @@ public class BetController {
 
     @Operation(summary = "Update an existing bet", description = "", tags = { "Bets" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Bet.class)))),
             @ApiResponse(responseCode = "404", description = "Bet not found") })
     @RequestMapping(method = RequestMethod.PUT, value = "/{betId}")
     public ResponseEntity<?> updateBet(@RequestBody Bet bet, @PathVariable Long betId) {
@@ -105,7 +129,7 @@ public class BetController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "Deletes a bet", description = "", tags = { "Bets" })
+    @Operation(summary = "Delete a bet", description = "", tags = { "Bets" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")})
     @RequestMapping(value = "/{betId}", method = RequestMethod.DELETE)
@@ -116,7 +140,8 @@ public class BetController {
     }
 
     //TODO: do smth with this duplicate (maybe create some util class)
-    private boolean isOperationPermitted(Long userIdToCheck, SecurityContextHolderAwareRequestWrapper securityWrapper) {
+    private boolean isOperationPermitted(
+            Long userIdToCheck, SecurityContextHolderAwareRequestWrapper securityWrapper) {
         if (securityWrapper.isUserInRole(Role.ADMIN.name())) {
             return true;
         }

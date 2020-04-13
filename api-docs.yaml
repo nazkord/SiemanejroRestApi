@@ -13,65 +13,12 @@ tags:
 - name: Bets
   description: the bet API
 paths:
-  /bets:
-    get:
-      tags:
-      - Bets
-      summary: Get all user bets
-      description: Get all logged user bets by default. Possibility to filter by matchId
-      operationId: getAllBets
-      parameters:
-      - name: securityWrapper
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
-      - name: matchId
-        in: query
-        description: Filter bets by matchId. By default is null
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        200:
-          description: successful operation
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Bet'
-    post:
-      tags:
-      - Bets
-      operationId: addBet
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                betList:
-                  type: array
-                  properties:
-                    empty:
-                      type: boolean
-                  items:
-                    $ref: '#/components/schemas/Bet'
-                securityWrapper:
-                  $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
-      responses:
-        200:
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: object
   /bets/{betId}:
     get:
       tags:
       - Bets
+      summary: Find bet by ID
+      description: Return a single bet
       operationId: getBet
       parameters:
       - name: betId
@@ -83,15 +30,16 @@ paths:
       - name: securityWrapper
         in: query
         required: true
-        schema:
-          $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
+        schema: {}
       responses:
         200:
-          description: default response
+          description: successful operation
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Bet'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bet'
     put:
       tags:
       - Bets
@@ -115,7 +63,9 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bet'
         404:
           description: Bet not found
           content:
@@ -125,7 +75,7 @@ paths:
     delete:
       tags:
       - Bets
-      summary: Deletes a bet
+      summary: Delete a bet
       operationId: deleteBet
       parameters:
       - name: betId
@@ -138,6 +88,68 @@ paths:
       responses:
         200:
           description: successful operation
+  /bets:
+    get:
+      tags:
+      - Bets
+      summary: Get all user bets
+      description: Get all logged user bets by default. Possibility to filter by matchId
+      operationId: getAllBets
+      parameters:
+      - name: matchId
+        in: query
+        description: Filter bets by matchId. By default is null
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: securityWrapper
+        in: query
+        required: true
+        schema: {}
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bet'
+    post:
+      tags:
+      - Bets
+      summary: Add new bet
+      operationId: addBet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                betList:
+                  type: array
+                  properties:
+                    empty:
+                      type: boolean
+                  items:
+                    $ref: '#/components/schemas/Bet'
+                securityWrapper: {}
+      responses:
+        403:
+          description: Forbidden operation (Someone else's bet was provided)
+          content:
+            '*/*':
+              schema:
+                type: object
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bet'
   /matches/{matchId}:
     get:
       tags:
@@ -191,6 +203,8 @@ paths:
     get:
       tags:
       - Users
+      summary: Find user by ID
+      description: Return a single user
       operationId: getUser
       parameters:
       - name: userId
@@ -202,18 +216,20 @@ paths:
       - name: securityWrapper
         in: query
         required: true
-        schema:
-          $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
+        schema: {}
       responses:
         200:
-          description: default response
+          description: successful operation
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/User'
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
     put:
       tags:
       - Users
+      summary: Update an existing user
       operationId: updateUser
       parameters:
       - name: userId
@@ -230,11 +246,16 @@ paths:
               properties:
                 userToUpdate:
                   $ref: '#/components/schemas/User'
-                securityWrapper:
-                  $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
+                securityWrapper: {}
       responses:
         200:
-          description: default response
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: object
+        404:
+          description: There is no user with provided id
           content:
             '*/*':
               schema:
@@ -242,6 +263,8 @@ paths:
     delete:
       tags:
       - Users
+      summary: Delete a user
+      description: Available only for admin
       operationId: deleteUser
       parameters:
       - name: userId
@@ -253,30 +276,32 @@ paths:
       requestBody:
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
+            schema: {}
       responses:
         200:
-          description: default response
+          description: successful operation
   /users:
     get:
       tags:
       - Users
+      summary: Get all users / get user by username
+      description: All users available only for admin. Possibility to filter by username
+        for everyone
       operationId: getAllUsers
       parameters:
       - name: securityWrapper
         in: query
         required: true
-        schema:
-          $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
+        schema: {}
       - name: userName
         in: query
+        description: Filter users by username. By default is null
         required: false
         schema:
           type: string
       responses:
         200:
-          description: default response
+          description: successful operation
           content:
             '*/*':
               schema:
@@ -286,6 +311,7 @@ paths:
     post:
       tags:
       - Users
+      summary: Add new user
       operationId: postUser
       requestBody:
         content:
@@ -295,1083 +321,22 @@ paths:
               properties:
                 newUser:
                   $ref: '#/components/schemas/User'
-                securityWrapper:
-                  $ref: '#/components/schemas/SecurityContextHolderAwareRequestWrapper'
+                securityWrapper: {}
       responses:
+        400:
+          description: Provided user has no unique name
+          content:
+            '*/*':
+              schema:
+                type: object
         200:
-          description: default response
+          description: successful operation
           content:
             '*/*':
               schema:
                 type: object
 components:
   schemas:
-    SecurityContextHolderAwareRequestWrapper:
-      type: object
-      properties:
-        request:
-          type: object
-          properties:
-            scheme:
-              type: string
-            inputStream:
-              type: object
-              properties:
-                readListener:
-                  type: object
-                  writeOnly: true
-                finished:
-                  type: boolean
-                ready:
-                  type: boolean
-            protocol:
-              type: string
-            attributeNames:
-              type: object
-            dispatcherType:
-              type: string
-              enum:
-              - FORWARD
-              - INCLUDE
-              - REQUEST
-              - ASYNC
-              - ERROR
-            parameterMap:
-              type: object
-              additionalProperties:
-                type: array
-                items:
-                  type: string
-            servletContext:
-              type: object
-              properties:
-                classLoader:
-                  type: object
-                  properties:
-                    parent:
-                      type: object
-                      properties:
-                        defaultAssertionStatus:
-                          type: boolean
-                          writeOnly: true
-                    defaultAssertionStatus:
-                      type: boolean
-                      writeOnly: true
-                initParameterNames:
-                  type: object
-                attributeNames:
-                  type: object
-                contextPath:
-                  type: string
-                majorVersion:
-                  type: integer
-                  format: int32
-                minorVersion:
-                  type: integer
-                  format: int32
-                sessionTimeout:
-                  type: integer
-                  format: int32
-                servletNames:
-                  type: object
-                sessionTrackingModes:
-                  uniqueItems: true
-                  type: array
-                  writeOnly: true
-                  items:
-                    type: string
-                    enum:
-                    - COOKIE
-                    - URL
-                    - SSL
-                effectiveMajorVersion:
-                  type: integer
-                  format: int32
-                effectiveMinorVersion:
-                  type: integer
-                  format: int32
-                servlets:
-                  type: object
-                serverInfo:
-                  type: string
-                servletContextName:
-                  type: string
-                servletRegistrations:
-                  type: object
-                  additionalProperties:
-                    type: object
-                    properties:
-                      mappings:
-                        type: array
-                        items:
-                          type: string
-                      runAsRole:
-                        type: string
-                      name:
-                        type: string
-                      className:
-                        type: string
-                      initParameters:
-                        type: object
-                        additionalProperties:
-                          type: string
-                filterRegistrations:
-                  type: object
-                  additionalProperties:
-                    type: object
-                    properties:
-                      urlPatternMappings:
-                        type: array
-                        items:
-                          type: string
-                      servletNameMappings:
-                        type: array
-                        items:
-                          type: string
-                      name:
-                        type: string
-                      className:
-                        type: string
-                      initParameters:
-                        type: object
-                        additionalProperties:
-                          type: string
-                sessionCookieConfig:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    path:
-                      type: string
-                    secure:
-                      type: boolean
-                    domain:
-                      type: string
-                    comment:
-                      type: string
-                    maxAge:
-                      type: integer
-                      format: int32
-                    httpOnly:
-                      type: boolean
-                defaultSessionTrackingModes:
-                  uniqueItems: true
-                  type: array
-                  items:
-                    type: string
-                    enum:
-                    - COOKIE
-                    - URL
-                    - SSL
-                effectiveSessionTrackingModes:
-                  uniqueItems: true
-                  type: array
-                  items:
-                    type: string
-                    enum:
-                    - COOKIE
-                    - URL
-                    - SSL
-                jspConfigDescriptor:
-                  type: object
-                  properties:
-                    taglibs:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          taglibURI:
-                            type: string
-                          taglibLocation:
-                            type: string
-                    jspPropertyGroups:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          defaultContentType:
-                            type: string
-                          urlPatterns:
-                            type: array
-                            items:
-                              type: string
-                          buffer:
-                            type: string
-                          elIgnored:
-                            type: string
-                          isXml:
-                            type: string
-                          pageEncoding:
-                            type: string
-                          scriptingInvalid:
-                            type: string
-                          includePreludes:
-                            type: array
-                            items:
-                              type: string
-                          includeCodas:
-                            type: array
-                            items:
-                              type: string
-                          deferredSyntaxAllowedAsLiteral:
-                            type: string
-                          trimDirectiveWhitespaces:
-                            type: string
-                          errorOnUndeclaredNamespace:
-                            type: string
-                virtualServerName:
-                  type: string
-                requestCharacterEncoding:
-                  type: string
-                responseCharacterEncoding:
-                  type: string
-            remoteAddr:
-              type: string
-            serverPort:
-              type: integer
-              format: int32
-            parameterNames:
-              type: object
-            characterEncoding:
-              type: string
-            secure:
-              type: boolean
-            serverName:
-              type: string
-            localAddr:
-              type: string
-            asyncStarted:
-              type: boolean
-            asyncSupported:
-              type: boolean
-            asyncContext:
-              type: object
-              properties:
-                response:
-                  type: object
-                  properties:
-                    contentLengthLong:
-                      type: integer
-                      format: int64
-                      writeOnly: true
-                    bufferSize:
-                      type: integer
-                      format: int32
-                    committed:
-                      type: boolean
-                    characterEncoding:
-                      type: string
-                    writer:
-                      type: object
-                    contentType:
-                      type: string
-                    contentLength:
-                      type: integer
-                      format: int32
-                      writeOnly: true
-                    outputStream:
-                      type: object
-                      properties:
-                        writeListener:
-                          type: object
-                          writeOnly: true
-                        ready:
-                          type: boolean
-                    locale:
-                      type: object
-                      properties:
-                        language:
-                          type: string
-                        script:
-                          type: string
-                        country:
-                          type: string
-                        variant:
-                          type: string
-                        extensionKeys:
-                          uniqueItems: true
-                          type: array
-                          items:
-                            type: string
-                        unicodeLocaleAttributes:
-                          uniqueItems: true
-                          type: array
-                          items:
-                            type: string
-                        unicodeLocaleKeys:
-                          uniqueItems: true
-                          type: array
-                          items:
-                            type: string
-                        iso3Language:
-                          type: string
-                        iso3Country:
-                          type: string
-                        displayLanguage:
-                          type: string
-                        displayScript:
-                          type: string
-                        displayCountry:
-                          type: string
-                        displayVariant:
-                          type: string
-                        displayName:
-                          type: string
-                timeout:
-                  type: integer
-                  format: int64
-            reader:
-              type: object
-            contentType:
-              type: string
-            localPort:
-              type: integer
-              format: int32
-            localName:
-              type: string
-            locale:
-              type: object
-              properties:
-                language:
-                  type: string
-                script:
-                  type: string
-                country:
-                  type: string
-                variant:
-                  type: string
-                extensionKeys:
-                  uniqueItems: true
-                  type: array
-                  items:
-                    type: string
-                unicodeLocaleAttributes:
-                  uniqueItems: true
-                  type: array
-                  items:
-                    type: string
-                unicodeLocaleKeys:
-                  uniqueItems: true
-                  type: array
-                  items:
-                    type: string
-                iso3Language:
-                  type: string
-                iso3Country:
-                  type: string
-                displayLanguage:
-                  type: string
-                displayScript:
-                  type: string
-                displayCountry:
-                  type: string
-                displayVariant:
-                  type: string
-                displayName:
-                  type: string
-            contentLength:
-              type: integer
-              format: int32
-            contentLengthLong:
-              type: integer
-              format: int64
-            remoteHost:
-              type: string
-            locales:
-              type: object
-            remotePort:
-              type: integer
-              format: int32
-        userPrincipal:
-          type: object
-          properties:
-            name:
-              type: string
-        remoteUser:
-          type: string
-        method:
-          type: string
-        requestURI:
-          type: string
-        headerNames:
-          type: object
-        contextPath:
-          type: string
-        session:
-          type: object
-          properties:
-            id:
-              type: string
-            attributeNames:
-              type: object
-            servletContext:
-              type: object
-              properties:
-                classLoader:
-                  type: object
-                  properties:
-                    parent:
-                      type: object
-                      properties:
-                        defaultAssertionStatus:
-                          type: boolean
-                          writeOnly: true
-                    defaultAssertionStatus:
-                      type: boolean
-                      writeOnly: true
-                initParameterNames:
-                  type: object
-                attributeNames:
-                  type: object
-                contextPath:
-                  type: string
-                majorVersion:
-                  type: integer
-                  format: int32
-                minorVersion:
-                  type: integer
-                  format: int32
-                sessionTimeout:
-                  type: integer
-                  format: int32
-                servletNames:
-                  type: object
-                sessionTrackingModes:
-                  uniqueItems: true
-                  type: array
-                  writeOnly: true
-                  items:
-                    type: string
-                    enum:
-                    - COOKIE
-                    - URL
-                    - SSL
-                effectiveMajorVersion:
-                  type: integer
-                  format: int32
-                effectiveMinorVersion:
-                  type: integer
-                  format: int32
-                servlets:
-                  type: object
-                serverInfo:
-                  type: string
-                servletContextName:
-                  type: string
-                servletRegistrations:
-                  type: object
-                  additionalProperties:
-                    type: object
-                    properties:
-                      mappings:
-                        type: array
-                        items:
-                          type: string
-                      runAsRole:
-                        type: string
-                      name:
-                        type: string
-                      className:
-                        type: string
-                      initParameters:
-                        type: object
-                        additionalProperties:
-                          type: string
-                filterRegistrations:
-                  type: object
-                  additionalProperties:
-                    type: object
-                    properties:
-                      urlPatternMappings:
-                        type: array
-                        items:
-                          type: string
-                      servletNameMappings:
-                        type: array
-                        items:
-                          type: string
-                      name:
-                        type: string
-                      className:
-                        type: string
-                      initParameters:
-                        type: object
-                        additionalProperties:
-                          type: string
-                sessionCookieConfig:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    path:
-                      type: string
-                    secure:
-                      type: boolean
-                    domain:
-                      type: string
-                    comment:
-                      type: string
-                    maxAge:
-                      type: integer
-                      format: int32
-                    httpOnly:
-                      type: boolean
-                defaultSessionTrackingModes:
-                  uniqueItems: true
-                  type: array
-                  items:
-                    type: string
-                    enum:
-                    - COOKIE
-                    - URL
-                    - SSL
-                effectiveSessionTrackingModes:
-                  uniqueItems: true
-                  type: array
-                  items:
-                    type: string
-                    enum:
-                    - COOKIE
-                    - URL
-                    - SSL
-                jspConfigDescriptor:
-                  type: object
-                  properties:
-                    taglibs:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          taglibURI:
-                            type: string
-                          taglibLocation:
-                            type: string
-                    jspPropertyGroups:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          defaultContentType:
-                            type: string
-                          urlPatterns:
-                            type: array
-                            items:
-                              type: string
-                          buffer:
-                            type: string
-                          elIgnored:
-                            type: string
-                          isXml:
-                            type: string
-                          pageEncoding:
-                            type: string
-                          scriptingInvalid:
-                            type: string
-                          includePreludes:
-                            type: array
-                            items:
-                              type: string
-                          includeCodas:
-                            type: array
-                            items:
-                              type: string
-                          deferredSyntaxAllowedAsLiteral:
-                            type: string
-                          trimDirectiveWhitespaces:
-                            type: string
-                          errorOnUndeclaredNamespace:
-                            type: string
-                virtualServerName:
-                  type: string
-                requestCharacterEncoding:
-                  type: string
-                responseCharacterEncoding:
-                  type: string
-            lastAccessedTime:
-              type: integer
-              format: int64
-            new:
-              type: boolean
-            valueNames:
-              type: array
-              items:
-                type: string
-            maxInactiveInterval:
-              type: integer
-              format: int32
-            creationTime:
-              type: integer
-              format: int64
-            sessionContext:
-              type: object
-              properties:
-                ids:
-                  type: object
-        queryString:
-          type: string
-        servletPath:
-          type: string
-        pathInfo:
-          type: string
-        requestURL:
-          type: object
-          properties:
-            length:
-              type: integer
-              format: int32
-              writeOnly: true
-        cookies:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              value:
-                type: string
-              version:
-                type: integer
-                format: int32
-              comment:
-                type: string
-              domain:
-                type: string
-              maxAge:
-                type: integer
-                format: int32
-              path:
-                type: string
-              secure:
-                type: boolean
-              httpOnly:
-                type: boolean
-        parts:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              size:
-                type: integer
-                format: int64
-              inputStream:
-                type: object
-              headerNames:
-                type: array
-                items:
-                  type: string
-              contentType:
-                type: string
-              submittedFileName:
-                type: string
-        authType:
-          type: string
-        httpServletMapping:
-          type: object
-          properties:
-            servletName:
-              type: string
-            pattern:
-              type: string
-            mappingMatch:
-              type: string
-              enum:
-              - CONTEXT_ROOT
-              - DEFAULT
-              - EXACT
-              - EXTENSION
-              - PATH
-            matchValue:
-              type: string
-        pathTranslated:
-          type: string
-        requestedSessionId:
-          type: string
-        requestedSessionIdValid:
-          type: boolean
-        requestedSessionIdFromCookie:
-          type: boolean
-        requestedSessionIdFromURL:
-          type: boolean
-        requestedSessionIdFromUrl:
-          type: boolean
-        trailerFields:
-          type: object
-          additionalProperties:
-            type: string
-        trailerFieldsReady:
-          type: boolean
-        scheme:
-          type: string
-        inputStream:
-          type: object
-          properties:
-            readListener:
-              type: object
-              writeOnly: true
-            finished:
-              type: boolean
-            ready:
-              type: boolean
-        protocol:
-          type: string
-        attributeNames:
-          type: object
-        dispatcherType:
-          type: string
-          enum:
-          - FORWARD
-          - INCLUDE
-          - REQUEST
-          - ASYNC
-          - ERROR
-        parameterMap:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        servletContext:
-          type: object
-          properties:
-            classLoader:
-              type: object
-              properties:
-                parent:
-                  type: object
-                  properties:
-                    defaultAssertionStatus:
-                      type: boolean
-                      writeOnly: true
-                defaultAssertionStatus:
-                  type: boolean
-                  writeOnly: true
-            initParameterNames:
-              type: object
-            attributeNames:
-              type: object
-            contextPath:
-              type: string
-            majorVersion:
-              type: integer
-              format: int32
-            minorVersion:
-              type: integer
-              format: int32
-            sessionTimeout:
-              type: integer
-              format: int32
-            servletNames:
-              type: object
-            sessionTrackingModes:
-              uniqueItems: true
-              type: array
-              writeOnly: true
-              items:
-                type: string
-                enum:
-                - COOKIE
-                - URL
-                - SSL
-            effectiveMajorVersion:
-              type: integer
-              format: int32
-            effectiveMinorVersion:
-              type: integer
-              format: int32
-            servlets:
-              type: object
-            serverInfo:
-              type: string
-            servletContextName:
-              type: string
-            servletRegistrations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  mappings:
-                    type: array
-                    items:
-                      type: string
-                  runAsRole:
-                    type: string
-                  name:
-                    type: string
-                  className:
-                    type: string
-                  initParameters:
-                    type: object
-                    additionalProperties:
-                      type: string
-            filterRegistrations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  urlPatternMappings:
-                    type: array
-                    items:
-                      type: string
-                  servletNameMappings:
-                    type: array
-                    items:
-                      type: string
-                  name:
-                    type: string
-                  className:
-                    type: string
-                  initParameters:
-                    type: object
-                    additionalProperties:
-                      type: string
-            sessionCookieConfig:
-              type: object
-              properties:
-                name:
-                  type: string
-                path:
-                  type: string
-                secure:
-                  type: boolean
-                domain:
-                  type: string
-                comment:
-                  type: string
-                maxAge:
-                  type: integer
-                  format: int32
-                httpOnly:
-                  type: boolean
-            defaultSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                - COOKIE
-                - URL
-                - SSL
-            effectiveSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                - COOKIE
-                - URL
-                - SSL
-            jspConfigDescriptor:
-              type: object
-              properties:
-                taglibs:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      taglibURI:
-                        type: string
-                      taglibLocation:
-                        type: string
-                jspPropertyGroups:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      defaultContentType:
-                        type: string
-                      urlPatterns:
-                        type: array
-                        items:
-                          type: string
-                      buffer:
-                        type: string
-                      elIgnored:
-                        type: string
-                      isXml:
-                        type: string
-                      pageEncoding:
-                        type: string
-                      scriptingInvalid:
-                        type: string
-                      includePreludes:
-                        type: array
-                        items:
-                          type: string
-                      includeCodas:
-                        type: array
-                        items:
-                          type: string
-                      deferredSyntaxAllowedAsLiteral:
-                        type: string
-                      trimDirectiveWhitespaces:
-                        type: string
-                      errorOnUndeclaredNamespace:
-                        type: string
-            virtualServerName:
-              type: string
-            requestCharacterEncoding:
-              type: string
-            responseCharacterEncoding:
-              type: string
-        remoteAddr:
-          type: string
-        serverPort:
-          type: integer
-          format: int32
-        parameterNames:
-          type: object
-        characterEncoding:
-          type: string
-        secure:
-          type: boolean
-        serverName:
-          type: string
-        localAddr:
-          type: string
-        asyncStarted:
-          type: boolean
-        asyncSupported:
-          type: boolean
-        asyncContext:
-          type: object
-          properties:
-            response:
-              type: object
-              properties:
-                contentLengthLong:
-                  type: integer
-                  format: int64
-                  writeOnly: true
-                bufferSize:
-                  type: integer
-                  format: int32
-                committed:
-                  type: boolean
-                characterEncoding:
-                  type: string
-                writer:
-                  type: object
-                contentType:
-                  type: string
-                contentLength:
-                  type: integer
-                  format: int32
-                  writeOnly: true
-                outputStream:
-                  type: object
-                  properties:
-                    writeListener:
-                      type: object
-                      writeOnly: true
-                    ready:
-                      type: boolean
-                locale:
-                  type: object
-                  properties:
-                    language:
-                      type: string
-                    script:
-                      type: string
-                    country:
-                      type: string
-                    variant:
-                      type: string
-                    extensionKeys:
-                      uniqueItems: true
-                      type: array
-                      items:
-                        type: string
-                    unicodeLocaleAttributes:
-                      uniqueItems: true
-                      type: array
-                      items:
-                        type: string
-                    unicodeLocaleKeys:
-                      uniqueItems: true
-                      type: array
-                      items:
-                        type: string
-                    iso3Language:
-                      type: string
-                    iso3Country:
-                      type: string
-                    displayLanguage:
-                      type: string
-                    displayScript:
-                      type: string
-                    displayCountry:
-                      type: string
-                    displayVariant:
-                      type: string
-                    displayName:
-                      type: string
-            timeout:
-              type: integer
-              format: int64
-        reader:
-          type: object
-        contentType:
-          type: string
-        localPort:
-          type: integer
-          format: int32
-        localName:
-          type: string
-        locale:
-          type: object
-          properties:
-            language:
-              type: string
-            script:
-              type: string
-            country:
-              type: string
-            variant:
-              type: string
-            extensionKeys:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-            unicodeLocaleAttributes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-            unicodeLocaleKeys:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-            iso3Language:
-              type: string
-            iso3Country:
-              type: string
-            displayLanguage:
-              type: string
-            displayScript:
-              type: string
-            displayCountry:
-              type: string
-            displayVariant:
-              type: string
-            displayName:
-              type: string
-        contentLength:
-          type: integer
-          format: int32
-        contentLengthLong:
-          type: integer
-          format: int64
-        remoteHost:
-          type: string
-        locales:
-          type: object
-        remotePort:
-          type: integer
-          format: int32
     Bet:
       type: object
       properties:
