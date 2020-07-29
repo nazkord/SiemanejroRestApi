@@ -8,11 +8,11 @@
 [![](https://img.shields.io/badge/SpringDoc_OpenApi_Ui-1.2.32-lightgrey)](https://github.com/springdoc/springdoc-openapi)
 [![](https://img.shields.io/badge/Javax%20Persistence%20Api-2.2-yellowgreen)](https://docs.oracle.com/javaee/7/api/javax/persistence/package-summary.html)
 
-Spring Boot backend application for Siemanejro. 
+Spring Boot backend application (rest api) for Siemanejro. 
 
 #### Technologies stack
 
-- Application based on [REST](https://restfulapi.net/) architecture style using [Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). 
+- Spring Boot application based on [REST](https://restfulapi.net/) architecture style using [Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). 
 - Data is fetching from https://www.football-data.org/ using [Spring WebFlux Library](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html) and saving into MySQL database.
 - Both Spring Boot application and MySQL server are running in [Docker](https://www.docker.com/) containers described below.
 
