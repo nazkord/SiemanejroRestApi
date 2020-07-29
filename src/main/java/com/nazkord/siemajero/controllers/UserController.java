@@ -1,10 +1,8 @@
 package com.nazkord.siemajero.controllers;
 
-import com.nazkord.siemajero.model.Bet;
 import com.nazkord.siemajero.model.User;
 import com.nazkord.siemajero.security.Role;
 import com.nazkord.siemajero.services.UserService;
-import com.oracle.tools.packager.Log;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -19,10 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")

@@ -1,5 +1,6 @@
 openapi: 3.0.1
 info:
+  version: 1.0.1
   title: Siemanejro Bets Api
   description: This is a Siemanejro Spring Boot RESTful service using OpenAPI 3
 servers:

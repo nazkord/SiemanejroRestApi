@@ -41,7 +41,7 @@ public class FootballDataClient {
 
     @Scheduled(fixedDelay = 20000)
     public void loadAllTodayMatches() {
-        System.out.println("CHECKING");
+//        System.out.println("CHECKING");
 
         MatchResponse matchesInResponse = webClient.get()
                 .uri("/matches?" + creatorDateString())
@@ -54,7 +54,7 @@ public class FootballDataClient {
                 .map(MatchResponse::getMatches)
                 .orElseThrow(() -> new RuntimeException("add description here"));
 
-        System.out.println("matches = " + matches);
+//        System.out.println("matches = " + matches);
 
         dbService.sync(matches);
     }

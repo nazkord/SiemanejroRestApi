@@ -7,16 +7,20 @@
             </Pattern>
         </layout>
     </appender>
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
 
     <logger name="com.nazkord" level="debug" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <root level="info">
-        <appender-ref ref="CONSOLE"/>
-    </root>
+<!--    <logger name="org.springframework" level="DEBUG" >-->
+<!--        <appender-ref ref="CONSOLE"/>-->
+<!--    </logger>-->
 
-<!--    <logger name="org.hibernate.jpa" level="DEBUG"/>-->
-<!--    <logger name="org.hibernate.jpa.internal.util" level="DEBUG"/> <logger name="org.hibernate.SQL" level="DEBUG"/>-->
+<!--    <logger name="org.hibernate.jpa" level="INFO"/>-->
+<!--    <logger name="org.hibernate.jpa.internal.util" level="INFO"/>-->
+<!--    <logger name="org.hibernate.SQL" level="INFO"/>-->
 
 </configuration>

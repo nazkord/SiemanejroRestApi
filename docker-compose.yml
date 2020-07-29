@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  mysql-server:
+    image: mysql
+    volumes:
+      - /Users/nazkord/Docker/mysql-docker/mysql-datadir:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: nazarock
+    ports:
+      - "3306:3306"
+    networks:
+      - spring-boot-mysql-network
+
+  spring-boot:
+    build: .
+#    image: siemanejro-spring-boot-app
+    depends_on:
+      - mysql-server
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-boot-mysql-network
+
+networks:
+  spring-boot-mysql-network:
+    driver: bridge
+
