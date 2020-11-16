@@ -4,26 +4,25 @@ services:
 
   mysql-server:
     image: mysql
-    volumes:
-      - /Users/nazkord/Docker/mysql-docker/mysql-datadir:/var/lib/mysql
+#    volumes:
+#      - ./tmpData:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: nazarock
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: siemanejro
     ports:
-      - "3306:3306"
-    networks:
-      - spring-boot-mysql-network
+      - "8001:3306"
 
   spring-boot:
     build: .
-#    image: siemanejro-spring-boot-app
+    image: nazkord/siemanejro:0.1
     depends_on:
       - mysql-server
+    restart: unless-stopped
+    environment:
+      DATABASE_HOST: mysql-server
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: siemanejro
+      DATABASE_PORT: 3306
     ports:
       - "8080:8080"
-    networks:
-      - spring-boot-mysql-network
-
-networks:
-  spring-boot-mysql-network:
-    driver: bridge
-
