@@ -21,6 +21,16 @@ Spring Boot backend application (rest api) for Siemanejro.
 The Rest Api documentation with description of endpoints is located here:<br>
 * https://app.swaggerhub.com/apis/nazkordd/Siemanejro-Bets-API/1.0.1
 
-## Docker
+## Running locally using Docker
 
-Is coming soon...
+- Navigate to the root of project directory
+- Build the spring-boot application and create docker image by running
+```bash
+mvn clean package
+```
+- Run the created docker image and initialize mysql database using docker-compose
+```bash
+docker-compose up -d
+```
+
+
