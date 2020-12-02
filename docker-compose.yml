@@ -4,17 +4,17 @@ services:
 
   mysql-server:
     image: mysql
-#    volumes:
-#      - ./tmpData:/var/lib/mysql
+    volumes:
+      - ./tmpData:/var/lib/mysql
+      - ./scripts/data.sql:/docker-entrypoint-initdb.d/data.sql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: siemanejro
     ports:
-      - "8001:3306"
+      - "8002:3306"
 
   spring-boot:
-    build: .
-    image: nazkord/siemanejro:0.1
+    image: com.nazkord/siemajero:0.0.1-SNAPSHOT
     depends_on:
       - mysql-server
     restart: unless-stopped
