@@ -6,7 +6,6 @@ services:
     image: mysql
     volumes:
       - ./tmpData:/var/lib/mysql
-      - ./scripts/data.sql:/docker-entrypoint-initdb.d/data.sql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: siemanejro
@@ -14,6 +13,7 @@ services:
       - "8002:3306"
 
   spring-boot:
+    # image created by spring-boot:build-image execution. Name of image is configured in pom.xml
     image: com.nazkord/siemajero:0.0.1-SNAPSHOT
     depends_on:
       - mysql-server
