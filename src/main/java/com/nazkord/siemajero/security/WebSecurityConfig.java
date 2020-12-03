@@ -1,5 +1,6 @@
 package com.nazkord.siemajero.security;
 
+import com.nazkord.siemajero.controllers.HealthCheckController;
 import com.nazkord.siemajero.controllers.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(UserController.TOKEN_LOGIN).permitAll()
+                .antMatchers(UserController.TOKEN_LOGIN, HealthCheckController.HEALTH_CHECK).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
