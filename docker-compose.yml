@@ -11,13 +11,16 @@ services:
       MYSQL_DATABASE: siemanejro
     ports:
       - "8002:3306"
+    # waiting for mysql to be ready for connection
+    healthcheck:
+      test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=$${MYSQL_ROOT_PASSWORD} 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
 
   spring-boot:
     # image created by spring-boot:build-image execution. Name of image is configured in pom.xml
     image: com.nazkord/siemajero:0.0.1-SNAPSHOT
     depends_on:
       - mysql-server
-    restart: unless-stopped
+    restart: on-failure
     environment:
       DATABASE_HOST: mysql-server
       DATABASE_USER: root
