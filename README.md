@@ -10,7 +10,7 @@
 
 Spring Boot backend application (rest api) for Siemanejro. 
 
-#### Technologies stack
+### Technologies stack
 
 - Spring Boot application based on [REST](https://restfulapi.net/) architecture style using [Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). 
 - Data is fetching from https://www.football-data.org/ using [Spring WebFlux Library](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html) and saving into MySQL database.
@@ -33,4 +33,14 @@ mvn clean package
 docker-compose up -d
 ```
 
+### Health checking 
 
+Type the following command to ensure that:
+- The application is up and running (the response should be just "OK"):
+```bash
+curl localhost:8080/healthCheck
+```
+- Admin (user is already in db) has been authorized by application: 
+```bash
+curl -u admin:admin localhost:8080/healthCheck/authorized
+```
